@@ -27,6 +27,10 @@ px = zeros(N, size(pix, 1));   % marginal probabilities from forward-backward
 
 % YOUR CODE GOES HERE
 %%% pixel based probabilities
+
+T = size(pix, 1);
+L = size(pix, 2);
+
 for i = 1:T
     for k = 1:N
         pobs(k,i)=exp(sum(log(hmm.pobs(k, logical(pix(i,:)))))+sum(log(1-hmm.pobs(k, ~logical(pix(i,:))))));
@@ -37,7 +41,6 @@ end
 % initialization
 f = zeros(N, T);
 f(:,1)=hmm.pstart.*pobs(:,1);
- 
  
 % iteration
 for i = 2:T

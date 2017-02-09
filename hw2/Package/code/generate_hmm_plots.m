@@ -12,7 +12,7 @@ load ../data/ocr_data.mat
 % >> imagesc(reshape(trainset.pixels(i,:), 8, 8)'); axis image; colormap gray;
 
 %% Train HMM and NB, plot the model
-hmm = hmm_learn(trainset.letter, trainset.prev_letter, trainset.pixels);
+hmm = hmm_learn(trainset.letter, trainset.prev_letter, trainset.pixels, 8);
 
 % Plot transition matrix
 figure('Name', 'Transition Probabilities');
@@ -53,8 +53,7 @@ for i = 1:numel(testset.wordidx)
     [pmax,yhat_hmm] = max(px);
 
     % Compute probability according to NB and take predictions
-    px_nb = % YOUR CODE GOES HERE
-            % Hint: Use pobs which was already computed for you by HMM_FB.
+    px_nb = repmat(hmm.pletters,1,length(idx)).*pobs;
     
     [pmax_nb,yhat_nb] = max(px_nb);
     

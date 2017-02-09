@@ -1,4 +1,4 @@
-function [hmm] = hmm_learn(letter, prev_letter, pixels)
+function [hmm] = hmm_learn(letter, prev_letter, pixels, alpha)
 % Learns parameters for an HMM from a given data table.
 %
 % Usage:
@@ -29,27 +29,27 @@ pobs = zeros(26, 64);
 % YOUR CODE GOES HERE
 %%% pstart
 start_word = find(prev_letter==-1);
-for k = 1:N
-    pstart(k) = (length(find(letter(start_word)==k))+pc)/(length(start_word)+pc);
+for k = 1:26
+    pstart(k) = (length(find(letter(start_word)==k))+alpha)/(length(start_word)+alpha);
 end
  
 %%% ptrans
-for i = 1:N
-    for j = 1:N
-        ptrans(i,j) = (length(find(prev_letter==i&letter==j))+pc)/(length(find(prev_letter==i))+pc);
+for i = 1:26
+    for j = 1:26
+        ptrans(i,j) = (length(find(prev_letter==i&letter==j))+alpha)/(length(find(prev_letter==i))+alpha);
     end
 end
  
 %%% pobs
-for k = 1:N
-    for l = 1:L
-        pobs(k,l) = (length(find(letter==k&pixels(:,l)==1))+pc)/(length(find(letter==k))+pc);
+for k = 1:26
+    for l = 1:64
+        pobs(k,l) = (length(find(letter==k&pixels(:,l)==1))+alpha)/(length(find(letter==k))+alpha);
     end
 end
  
 %%% pletters
-for k = 1:N
-    pletters(k) = (length(find(letter==k))+pc)/(length(letter)+pc);
+for k = 1:26
+    pletters(k) = (length(find(letter==k))+alpha)/(length(letter)+alpha);
 end
 
 hmm.pstart = pstart;
