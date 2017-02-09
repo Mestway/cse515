@@ -27,6 +27,30 @@ ptrans = zeros(26,26);
 pobs = zeros(26, 64);
 
 % YOUR CODE GOES HERE
+%%% pstart
+start_word = find(prev_letter==-1);
+for k = 1:N
+    pstart(k) = (length(find(letter(start_word)==k))+pc)/(length(start_word)+pc);
+end
+ 
+%%% ptrans
+for i = 1:N
+    for j = 1:N
+        ptrans(i,j) = (length(find(prev_letter==i&letter==j))+pc)/(length(find(prev_letter==i))+pc);
+    end
+end
+ 
+%%% pobs
+for k = 1:N
+    for l = 1:L
+        pobs(k,l) = (length(find(letter==k&pixels(:,l)==1))+pc)/(length(find(letter==k))+pc);
+    end
+end
+ 
+%%% pletters
+for k = 1:N
+    pletters(k) = (length(find(letter==k))+pc)/(length(letter)+pc);
+end
 
 hmm.pstart = pstart;
 hmm.ptrans = ptrans;
